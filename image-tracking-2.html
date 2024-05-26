@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="./assets/icon/title-icon.png" type="image/x-icon">
+    <title>image-tracking-2: girl theme</title>
+    <link rel="stylesheet" href="assets/css reset/reset.css">
+
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const setSelected = (button, buttonList) => {
+          buttonList.forEach((e) => {
+            if (e.classList.contains('selected')) {
+              e.classList.remove("selected");
+            }
+          })
+          if (button.classList.contains('selected')) {
+            button.classList.remove("selected");
+          } else {
+            button.classList.add("selected");
+          }
+        }
+        const body = document.querySelector("body");
+        const backgroundList = document.querySelector(".background-list").children;
+        const buttonBackgroundList = document.querySelectorAll(".button-background");
+
+        body.addEventListener('click', (e) => {
+          const clickedElement = event.target;
+          const button = clickedElement.closest('.button-background');
+          if (button) {
+            setSelected(button, buttonBackgroundList);
+            for (let i = 0; i < backgroundList.length; i++) {
+              if (backgroundList[i].classList.contains('selected')) {
+                const background = backgroundList[i].getAttribute('id')
+                const backgroundEntity = document.querySelectorAll(".background-entity");
+                backgroundEntity.forEach(e => {
+                  e.setAttribute("src", "#" + background + "-image");
+                })
+              }
+            }
+          }
+        });
+
+        const modelCaption = document.querySelector(".model-caption");
+        document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
+          target.addEventListener('targetFound', () => {
+            const modelName = target.children[1].getAttribute('src');
+            console.log('model found: ' + modelName);
+            modelCaption.textContent = `Model Name: ${modelName}`
+          });
+          target.addEventListener('targetLost', () => {
+            console.log('target lost');
+            modelCaption.textContent = ''
+          });
+        });
+      })
+    </script>
+    <style>
+      .main-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .background-list {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 4;
+      }
+      .background-list .button-background {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .background-list img.selected {
+        border-color: green;
+      }
+      .model-caption {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+
+        width: 50vw;
+        height: 50px;
+        text-align: center;
+        background-color: white;
+        color: black;
+        border: 3px solid red;
+      }
+      .back-button {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 4;
+        cursor: pointer;
+      }
+      .back-button-icon {
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+</head>
+
+<body>
+  <audio id="backgroundMusic" src="./assets/backsound/Main Theme Of Final Fantasy Vii (final Fantasy Vii).mp3" autoplay loop></audio>
+  <div class="main-container">
+    <div class="background-list">
+      <img id="background-1" src="./assets/background/background-1.jpg" class="button-background selected">
+      <img id="background-2" src="./assets/background/background-2.jpg" class="button-background ">
+    </div>
+    <div class="back-button">
+      <a href="https://valentinov8060.github.io/multiple-marker/main-menu-image-tracking.html">
+        <img src="assets/icon/back-icon.svg" alt="Back button" class="back-button-icon">
+      </a>
+    </div>
+    <div class="model-caption">
+    </div>
+  </div>
+
+
+  <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/band-example/target.mind; autoStart: true;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <a-asset-item id="beeModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Bee/scene.gltf"></a-asset-item>
+      <a-asset-item id="whaleModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Blue%20Whale/scene.gltf"></a-asset-item>
+      <a-asset-item id="antModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Ant/scene.gltf"></a-asset-item>
+      <a-asset-item id="bondModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Bond%20Forger/scene.gltf"></a-asset-item>
+      <a-asset-item id="elephantModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Elephant/scene.gltf"></a-asset-item>
+      <a-asset-item id="guppyModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Guppy/scene.gltf"></a-asset-item>
+      <a-asset-item id="koiModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Koi%20Fish/scene.gltf"></a-asset-item>
+      <a-asset-item id="mosquitoModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Mosquito%20in/scene.gltf"></a-asset-item>
+      <a-asset-item id="crocodileModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Nile%20Crocodile%20Swimming/scene.gltf"></a-asset-item>
+      <a-asset-item id="catModel" src="https://cdn.jsdelivr.net/gh/Teguhkr/AR-1@main/assets/Sleeping/scene.gltf"></a-asset-item>
+
+      <img id="background-1-image" src="./assets/background/background-1.jpg">
+      <img id="background-2-image" src="./assets/background/background-2.jpg">
+    </a-assets>
+  
+    <a-camera position="0 0 0"></a-camera>
+  
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#beeModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 1">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.0005 0.0005 0.0005" src="#whaleModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 2">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.0005 0.0005 0.0005" src="#antModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 3">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.2 0.2 0.2" src="#koiModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 4">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.005 0.005 0.005" src="#mosquitoModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 5">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="12 12 12" src="#guppyModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 6">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="50 50 50" src="#bondModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 7">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.005 0.005 0.005" src="#elephantModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 8">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="90 0 0 " position="0 -0.25 0" scale="2 2 2" src="#catModel"></a-gltf-model>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 9">
+      <a-image position="0 .5 0" rotation="0 0 0" width="1" height="1" src="#background-1-image" class="background-entity"></a-image>
+      <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.09 0.09 0.09" src="#crocodileModel" ></a-gltf-model>
+    </a-entity>
+  </a-scene>
+</body>
+</html>
